@@ -17,7 +17,7 @@ class ObjLoader(object):
 
                 elif line.startswith('f'):
                     line = line.strip().split()
-                    face = ((line[1]),(line[2]), (line[3]) )
+                    face = (int(line[1]), int(line[2]), int(line[3]) )
                     ##
                     self.faces.append(face)
 

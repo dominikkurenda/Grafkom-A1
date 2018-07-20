@@ -3,36 +3,25 @@ from OpenGL.GL import *
 
 class ObjLoader(object):
     def __init__(self, fileName):
-        self.vertices = []
-        self.faces = []
+        self.vertices = list()
+        self.faces = list()
         ##
         try:
-            f = open(fileName)
-            for line in f:
-                if line[:2] == "v ":
-                    index1 = line.find(" ") + 1
-                    index2 = line.find(" ", index1 + 1)
-                    index3 = line.find(" ", index2 + 1)
-
-                    vertex = (float(line[index1:index2]), float(line[index2:index3]), float(line[index3:-1]))
+            file = open(fileName)
+            for line in file:
+                if line.startswith('v '):
+                    line = line.strip().split()
+                    vertex = (float(line[1]), float(line[2]), float(line[3]) )
                     vertex = (round(vertex[0], 2), round(vertex[1], 2), round(vertex[2], 2))
                     self.vertices.append(vertex)
 
-                elif line[0] == "f":
-                    string = line.replace("//", "/")
+                elif line.startswith('f'):
+                    line = line.strip().split()
+                    face = (int(line[1]), int(line[2]), int(line[3]) )
                     ##
-                    i = string.find(" ") + 1
-                    face = []
-                    for item in range(string.count(" ")):
-                        if string.find(" ", i) == -1:
-                            face.append(string[i:-1])
-                            break
-                        face.append(string[i:string.find(" ", i)])
-                        i = string.find(" ", i) + 1
-                    ##
-                    self.faces.append(tuple(face))
+                    self.faces.append(face)
 
-            f.close()
+            file.close()
         except IOError:
             print(".obj file not found.")
 
